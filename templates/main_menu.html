@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Car Clash - Main Menu</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    overflow:hidden;
+    color:white;
+}
+
+/* BACKGROUND */
+.main-container{
+    height:100vh;
+    width:100%;
+    background:url("/static/image/bg0.png") center/cover no-repeat;
+    position:relative;
+}
+
+/* TOP BAR */
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0;
+    background:linear-gradient(90deg,#2c3e5000,#4ca2af00);
+
+}
+
+.profile{
+    text-decoration: none;
+    display:flex;
+    align-items:left;
+    gap:10px;
+    background: #35526d;
+
+}
+
+.avatar{
+    width:45px;
+    height:45px;
+    border:2px solid white;
+    background: #222;
+}
+
+.username{
+    text-decoration: none;
+    font-size:18px;
+    font-weight:bold;
+    
+}
+
+.shop-btn{
+    text-decoration: none;
+    background: rgb(255, 128, 0);
+    border: solid #908f8e;
+    color:#ffffff;
+    text-align: center;
+    padding:10px 10px;
+    padding-left: 10px;
+    height: 40px;
+    width: 70px;
+    cursor:pointer;
+    font-size: 30px;
+    font-weight:bold;
+    clip-path: polygon(20% 0, 100% 0, 80% 100%, 0% 100%);
+    background:linear-gradient(90deg,#13161a,#474c4d);
+    
+}
+
+
+
+
+/* CAR STATS PANEL */
+.car-panel{
+    position:absolute;
+    left:30px;
+    top:120px;
+    width:280px;
+    background:rgba(0,0,0,0.6);
+    padding:20px;
+    border-radius:10px;
+}
+
+.car-title{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.stat{
+    margin-bottom:10px;
+}
+
+.stat-name{
+    font-size:12px;
+    margin-bottom:4px;
+}
+
+.bar{
+    height:8px;
+    background:#333;
+    border-radius:5px;
+}
+
+.fill{
+    height:100%;
+    background:#00aaff;
+    border-radius:5px;
+}
+
+/* BOTTOM MENU */
+.bottom-menu{
+    position:absolute;
+    bottom:30px;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 30px;
+    box-sizing:border-box;
+}
+
+.left-buttons{
+    display:flex;
+    gap:10px;
+}
+
+.menu-btn{
+    text-decoration: none;
+    background:#333;
+    border:none;
+    color:white;
+    padding:12px 20px;
+
+    cursor:pointer;
+}
+
+.play-btn{
+    position:absolute;
+    left:75%;
+    bottom: 30%;
+    font-size:40px;
+    padding:20px 60px;
+    border:none;
+    background:linear-gradient(45deg,#03f907,#3fee05);
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    box-shadow:0 5px 20px rgb(1, 1, 1);
+}
+
+.play-btn:hover{
+    transform:scale(1.05);
+}
+
+#settings-menu{
+    position:absolute;
+    bottom:80px;
+    left:20px;
+    width:250px;
+    background:rgba(0,0,0,0.9);
+    padding:20px;
+
+    box-shadow:0 0 15px black;
+    display:none;
+    flex-direction:column;
+    gap:10px;
+}
+
+#settings-menu h3{
+    margin:0 0 10px 0;
+    text-align:center;
+}
+
+#settings-menu label{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:14px;
+}
+
+#settings-menu select{
+    background:#222;
+    color:white;
+    border:none;
+    padding:5px;
+}
+
+.logout-btn{
+    background:red;
+    padding:10px;
+    text-align:center;
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.hidden{
+    display:none;
+}
+
+#unity-canvas{
+    width:100%;
+    height:100%;
+    display:none;
+}
+
+.title{
+    position:absolute;
+    top:-15px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:40px;
+    letter-spacing:3px;
+    text-shadow:0 0 10px black;
+    z-index:10;
+}
+
+/* CAR DISPLAY */
+#carDisplay{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:300px;
+    height:180px;
+}
+
+#carDisplay img{
+    width:auto;
+    height:100%;
+    display:block;
+    margin:0 auto;
+    z-index:5;
+}
+
+/* Gaming style arrow buttons */
+.arrow-btn {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    font-size: 32px;            /* arrow ka size */
+    width: 50px;                 /* dono arrow ke liye same width */
+    height: 50px;                /* dono arrow ke liye same height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0); /* semi-transparent dark background */
+    border: 2px solid #fff;     
+    border-radius: 10px;
+    color: #fff;
+    text-shadow: 0 0 5px #000, 0 0 10px rgb(0, 0, 0); 
+    box-shadow: 0 0 15px rgb(0, 0, 0);   
+    z-index: 10;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#carDisplay .arrow-btn:first-child { left: -70px; }
+#carDisplay .arrow-btn:last-child { right: -210px; }
+
+.arrow-btn:hover {
+    transform: translateY(-50%) scale(1.2); 
+
+}
+
+.lock-overlay{
+    position:absolute;
+    top:-50%;
+    left:-5%;
+    width:150%;
+    height:180%;
+    background:rgba(0,0,0,0.6);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:24px;
+    font-weight:bold;
+    border-radius:5px;
+}
+
+#matchText{
+position:absolute;
+bottom:16px;
+left:83%;
+transform:translateX(-50%);
+font-size:30px;
+font-weight:bold;
+display:none;
+color:black;
+text-shadow:0 0 10px rgba(0, 0, 0, 0);
+z-index:20;
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.profile-button {
+    text-decoration: none;
+    background-color: #00000096; /* nice green button */
+    color: rgb(255, 255, 255);
+    border: none;
+    height:40px;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* space between icon and text */
+    transition: all 0.2s ease;
+}
+
+.profile-button:hover {
+    background-color: #000000; /* hover effect */
+    transform: scale(1.05);
+}
+
+.profile-icon {
+    width: 28px;
+    height: 24px;
+    left:10%;
+}
+
+/* PROFILE BOX */
+.profile-box{
+    width: 180px;
+    cursor: pointer;
+    display:flex;
+    align-items:center;
+    background:linear-gradient(90deg,#13161a,#474c4d);
+    clip-path: polygon(0% 0, 100% 0, 80% 100%, 0% 100%);
+    padding:0;
+    
+}
+
+.profile-wrapper{
+    background: black;
+    padding: 3px;
+    clip-path: polygon(0% 0, 100% 0, 80% 100%, 0% 100%);
+}
+
+
+
+/* AVATAR */
+.avatar{
+    width:55px;
+    height:55px;
+    border-radius:0; /* square */
+    border:2px solid #fff;
+    margin-right:10px;
+}
+
+/* NAME + VIP */
+.profile-info{
+    display:flex;
+    flex-direction:column;
+}
+
+/* PLAYER NAME */
+.player-name{
+    text-transform:uppercase;
+    font-weight:bold;
+    font-size:16px;
+    letter-spacing:1px;
+}
+
+/* VIP TAG */
+.vip-tag{
+    background:gold;
+    color:black;
+    font-size:12px;
+    padding:2px 8px;
+    margin-top:2px;
+    width:max-content;
+    clip-path: polygon(0 0, 90% 0, 100% 100%, 0% 100%);
+}
+</style>
+</head>
+
+<body>
+
+<div class="main-container">
+
+    <canvas id="unity-canvas"></canvas>
+
+    <div id="main-menu">
+        <h1 class="title">Main Menu</h1>
+
+        <!-- TOP BAR -->
+        <div class="top-bar">
+            <div class="profile-wrapper">
+            <div class="profile-box" onclick="goToProfile()">
+
+    <img src="/static/image/mn2.png" class="avatar">
+
+    <div class="profile-info">
+        <div class="player-name">{{username}}</div>
+        <div class="vip-tag">VIP: 1</div>
+    </div>
+    </div>
+
+</div>
+                
+                <a href="/shop" class="shop-btn">🛒</a>
+                
+        </div>
+
+        <!-- CAR PANEL -->
+        <div class="car-panel">
+            <div class="car-title">VELOSTER</div>
+            <div class="stat">
+                <div class="stat-name">TOP SPEED</div>
+                <div class="bar"><div class="fill" style="width:80%"></div></div>
+            </div>
+            <div class="stat">
+                <div class="stat-name">HANDLING</div>
+                <div class="bar"><div class="fill" style="width:60%"></div></div>
+            </div>
+            <div class="stat">
+                <div class="stat-name">BRAKE</div>
+                <div class="bar"><div class="fill" style="width:70%"></div></div>
+            </div>
+            <div class="stat">
+                <div class="stat-name">ROAD GRIP</div>
+                <div class="bar"><div class="fill" style="width:85%"></div></div>
+            </div>
+        </div>
+
+        <!-- CAR DISPLAY -->
+        <!-- CAR DISPLAY -->
+        <div id="carDisplay" style="position:absolute; top:65%; left:47%; transform:translate(-50%,-50%); width:330px; height:200px;">
+            <!-- Left Arrow -->
+            <button class="arrow-btn" id="leftArrow" onclick="prevCar()"><</button>
+
+            <!-- Car Image -->
+            <img id="carImage" src="/static/image/n1.png" style="width:auto; height:100%; display:block; margin:0 auto; z-index:5;">
+
+            <!-- Lock overlay -->
+            <div class="lock-overlay" id="lockOverlay">LOCKED</div>
+
+            <!-- Right Arrow -->
+            <button class="arrow-btn" id="rightArrow" onclick="nextCar()">></button>
+        </div>
+
+        <!-- BOTTOM MENU -->
+        <div class="bottom-menu">
+            <div class="left-buttons">
+                <button class="menu-btn" onclick="showComingSoon()">MORE GAMES</button>
+                <a href="/privacy_policy" class="menu-btn">PRIVACY POLICY</a>
+                <button class="menu-btn" onclick="openSettings()">SETTINGS</button>
+            </div>
+            <div id="matchText" style="display:none;">
+                <button onclick="cancelMatch()" style="
+                bottom:30px;
+                left:95%;
+                margin-top:10px;
+                background:rgba(255, 0, 0, 0);
+                border:none;
+                color:rgb(0, 0, 0);
+                font-size:20px;
+                width:100px;
+                height:40px;
+                border-radius:50%;
+                cursor:pointer;
+                ">
+                X
+                </button>
+                <br>
+                Starting... <span id="matchTimer">5</span>
+                <br>
+                  
+            </div>
+            <button class="play-btn" id="playButton" onclick="playGame()">PLAY</button>
+        </div>
+    </div>
+
+    <div id="settings-menu" class="hidden">
+        <h3>⚙ SETTINGS</h3>
+        <label>Music<input type="checkbox" checked></label>
+        <label>Sound Effects<input type="checkbox" checked></label>
+        <label>Graphics
+        <select>
+        <option>Low</option>
+        <option>Medium</option>
+        <option>High</option>
+        </select></label>
+        <label>Controls
+        <select>
+        <option>Keyboard</option>
+        <option>Touch</option>
+        </select></label>
+        <a href="/logout" class="logout-btn">Logout</a>
+        <button class="menu-btn" onclick="closeSettings()">Close</button>
+    </div>
+</div>
+<div id="comingSoonPopup" style="
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:black;
+color:white;
+padding:30px 50px;
+border-radius:10px;
+font-size:28px;
+font-weight:bold;
+box-shadow:0 0 20px black;
+z-index:999;
+">
+Coming Soon!!
+</div>
+
+<script>
+var globalUnityInstance=null;
+let countdown;
+let timer = 5;
+var buildUrl="/static/BugattiBuild/Build";
+var config={
+dataUrl: buildUrl+"/BugattiBuild.data",
+frameworkUrl: buildUrl+"/BugattiBuild.framework.js",
+codeUrl: buildUrl+"/BugattiBuild.wasm",
+streamingAssetsUrl:"StreamingAssets",
+companyName:"DefaultCompany",
+productName:"Car_Clash",
+productVersion:"1.0",
+};
+var script=document.createElement("script");
+script.src=buildUrl+"/BugattiBuild.loader.js";
+script.onload=()=>{
+createUnityInstance(document.querySelector("#unity-canvas"),config).then((instance)=>{
+globalUnityInstance=instance;
+console.log("Unity Loaded");
+});
+};
+document.body.appendChild(script);
+
+function playGame(){
+
+    if(!globalUnityInstance){
+        alert("Game loading... please wait");
+        return;
+    }
+
+    timer = 0;
+
+    document.getElementById("matchText").style.display = "block";
+    document.getElementById("playButton").style.color= "transparent";
+    document.getElementById("matchTimer").innerText = timer;
+
+    countdown = setInterval(function(){
+
+        timer++;
+        document.getElementById("matchTimer").innerText = timer;
+
+        if(timer >= 5){
+
+            clearInterval(countdown);
+
+            document.getElementById("main-menu").style.display="none";
+            document.getElementById("unity-canvas").style.display="block";
+
+            globalUnityInstance.SendMessage("GameManager","StartGame");
+
+        }
+
+    },1000);
+}
+
+function openSettings(){ document.getElementById("settings-menu").style.display = "flex"; }
+function closeSettings(){ document.getElementById("settings-menu").style.display = "none"; }
+
+// CAR SELECTION
+let cars = [
+  "/static/image/n1.png",
+  "/static/image/car2.png",
+  "/static/image/car3.png",
+  "/static/image/car4.png"
+];
+
+let unlocked = [true, false, false, false]; // First car unlocked
+
+let currentCar = 0;
+
+function updateCar() {
+    document.getElementById("carImage").src = cars[currentCar];
+
+    const lockOverlay = document.getElementById("lockOverlay");
+    const playBtn = document.getElementById("playButton");
+
+    if(unlocked[currentCar]){
+        lockOverlay.style.display = "none";
+        playBtn.innerText = "PLAY";
+        playBtn.style.background = "linear-gradient(45deg,#03f907,#3fee05)";
+        playBtn.disabled = false;
+    } 
+    else{
+        lockOverlay.style.display = "flex";
+        playBtn.innerText = "LOCKED";
+        playBtn.style.background = "gray";
+        playBtn.disabled = true;
+    }
+}
+
+function nextCar() {
+    currentCar++;
+    if(currentCar >= cars.length) currentCar = 0;
+    updateCar();
+}
+
+function prevCar() {
+    currentCar--;
+    if(currentCar < 0) currentCar = cars.length - 1;
+    updateCar();
+}
+
+// Initial update
+updateCar();
+</script>
+<script>
+
+const clickSound = new Audio("/static/sounds/bg1-music.mp3");
+clickSound.preload = "auto";
+
+// BUTTON SOUND
+document.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+        const sound = clickSound.cloneNode();
+        sound.play().catch(()=>{});
+    });
+});
+
+// LINK SOUND + DELAY REDIRECT
+document.querySelectorAll("a").forEach(link=>{
+    link.addEventListener("click", function(e){
+
+        e.preventDefault(); // normal redirect rok do
+
+        const url = this.href;
+
+        const sound = clickSound.cloneNode();
+        sound.play().catch(()=>{});
+
+        setTimeout(()=>{
+            window.location.href = url;
+        },200); // 0.2 sec delay
+
+    });
+});
+
+function cancelMatch(){
+    clearInterval(countdown);
+    document.getElementById("matchText").style.display = "none";
+    document.getElementById("playButton").style.color = "black";
+}
+
+</script>
+<script>
+
+function showComingSoon(){
+
+    let popup = document.getElementById("comingSoonPopup");
+
+    popup.style.display = "block";
+
+    setTimeout(function(){
+        popup.style.display = "none";
+    },2000); // 2 second baad hide
+
+}
+
+function goToProfile(){
+
+    const sound = new Audio("/static/sounds/bg1-music.mp3");
+    sound.play().catch(()=>{});
+
+    setTimeout(()=>{
+        window.location.href = "/profile";
+    },200);
+}
+
+</script>
+
+
+</body>
+</html>

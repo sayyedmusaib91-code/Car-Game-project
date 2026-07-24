@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Clash - Login</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background: url('/static/image/.png') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+
+        .login-card {
+            background: rgba(0, 0, 0, 0.39);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.68);
+            width: 350px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            color: #00d2ff;
+            text-transform: uppercase;
+        }
+
+        .flash-msg {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .flash-msg.success {
+            background: rgba(0, 255, 0, 0.1);
+            color: #00ff88;
+        }
+
+        .flash-msg.error {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff4d4d;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background: rgba(255,255,255,0.05);
+            color: white;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .signup-link {
+            margin-top: 15px;
+            font-size: 13px;
+        }
+
+        .signup-link a {
+            color: #00d2ff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-card">
+    <h2>Login</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-msg {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form action="/login" method="POST">
+        <div class="input-group">
+            <input type="text" name="username" placeholder="Username" required>
+        </div>
+
+        <div class="input-group">
+            <input type="password" name="password" placeholder="Password" required>
+        </div>
+
+        <button type="submit" class="btn-submit">Submit</button>
+    </form>
+
+    <div style="margin: 15px 0; color: #888; font-size: 12px;">OR</div>
+
+    <a href="/login_guest">
+        <button type="button" class="btn-submit" style="background:transparent; border:1px solid #00d2ff;">
+            Guest
+        </button>
+    </a>
+
+    <div class="signup-link">
+        New here? <a href="/signup">Create Account</a>
+    </div>
+</div>
+
+</body>
+</html>
